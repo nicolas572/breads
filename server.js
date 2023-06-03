@@ -19,6 +19,11 @@ app.get('/', (req, res) => {
     res.render('home')
 })
 
+//404 page
+app.get('*', (req, res) => {
+    res.render('error404')
+})
+
 //listen
 app.listen(PORT, () => {
     console.log('listening on port', PORT)
