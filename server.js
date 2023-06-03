@@ -16,12 +16,7 @@ app.engine('jsx', require('express-react-views').createEngine())
 
 //routes
 app.get('/', (req, res) => {
-    res.render('home')
-})
-
-//404 page
-app.get('*', (req, res) => {
-    res.render('error404')
+    res.render('Welcome to my awesome Bread app')
 })
 
 //listen
