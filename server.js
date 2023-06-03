@@ -16,7 +16,7 @@ app.engine('jsx', require('express-react-views').createEngine())
 
 //routes
 app.get('/', (req, res) => {
-    res.send('Welcome to an awesome app about breads!')
+    res.render('home')
 })
 
 //listen
