@@ -1,4 +1,4 @@
-# Breads
+# Routes
 
 | Method | Path | Purpose |
 | ------ | ---- | ------- |
@@ -13,3 +13,13 @@
 | POST | /places/:id/rant | Create a rant (comment) about a particular place |
 | DELETE | /places/:id/rant/:rantId | Delete a rant (comment) about a particular place |
 | GET | * | 404 page (matches any route not defined above) |
+
+## Places
+
+| _id | Object Id |
+| --- | --- |
+| Name | String |
+| City | String | 
+| State | String |
+| Cuisines | String |
+| Pic | String |
