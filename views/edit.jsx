@@ -1,5 +1,4 @@
 const React = require('react')
-const bread = require('../models/bread')
 const Default = require('./layouts/Default')
 
 function Edit ({bread, index}) {

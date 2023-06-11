@@ -1,20 +1,23 @@
 //dependencies
 const express = require('express')
+const methodOverride = require('method-override')
+const app = express()
+const mongoose = require('mongoose')
 
 // CONFIGURATION
 require('dotenv').config()
 const PORT = process.env.PORT
-const app = express()
-const methodOverride = require('method-override')
-const mongoose = require('mongoose')
 
 // MIDDLEWARE
+const breadsController = require('./controllers/bread_controller.js')
+app.use(methodOverride('_method'))
+app.use('/breads', breadsController)
+app.use(express.static('public'))
+app.use(express.urlencoded({extended: true}))
+app.use(express.json())
 app.set('views', __dirname + '/views')
 app.set('view engine', 'jsx')
 app.engine('jsx', require('express-react-views').createEngine())
-app.use(express.static('public'))
-app.use(express.urlencoded({extended: true}))
-app.use(methodOverride('_method'))
 
 //routes
 app.get('/', (req, res) => {
