@@ -1,6 +1,7 @@
 const express = require('express')
 const breads = express.Router()
 const Bread = require('../models/bread.js')
+const mongoose = require('mongoose')
 
 // INDEX
 breads.get('/', (req, res) => {
@@ -14,11 +15,15 @@ breads.get('/', (req, res) => {
 })
 
 // EDIT
-breads.get('/:indexArray/edit', (req, res) => {
-  res.render('edit', {
-    bread: Bread[req.params.indexArray],
-    index: req.params.indexArray
-  })
+breads.get('/:id/edit', (req, res) => {
+    Bread.findById(req.params.id)
+    .then(foundBread => {
+      res.render('edit', {
+        bread: foundBread
+      })
+    })
+    // bread: Bread[req.params.indexArray],
+    // index: req.params.indexArray
 })
 
 // NEW
@@ -27,12 +32,15 @@ breads.get('/new', (req, res) => {
 })
 
 //show
-breads.get('/:arrayIndex', (req, res) => {
+breads.get('/:id', (req, res) => {
   Bread.findById(req.params.id)
     .then(foundBread => {
-      res.render('Show', {
+      res.render('show', {
         bread: foundBread
       })
+    })
+    .catch(err => {
+      res.send('<h1>404: This is not a page you should be on</h1>')
     })
 })
 //     if (Bread[req.params.arrayIndex]) {
@@ -46,7 +54,7 @@ breads.get('/:arrayIndex', (req, res) => {
 
 // CREATE
 breads.post('/', express.urlencoded({extended: true}), (req, res) => {
-  console.log('undefined')
+  //console.log('undefined')
   if (!req.body.image) {
     req.body.image = undefined
   }
@@ -59,22 +67,27 @@ breads.post('/', express.urlencoded({extended: true}), (req, res) => {
   res.redirect('/breads')
 })
 
+// DELETE
+breads.delete('/:id', (req, res) => {
+  Bread.findByIdAndDelete(req.params.id) 
+  .then(deletedBread => { 
+    res.status(303).redirect('/breads')
+  })
+})
+
 // UPDATE
-breads.put('/:arrayIndex', express.urlencoded({extended: true}), (req, res) => {
+breads.put('/:id', express.urlencoded({extended: true}), (req, res) => {
   if(req.body.hasGluten === 'on'){
     req.body.hasGluten = true
   } else {
     req.body.hasGluten = false
   }
-  Bread[req.params.arrayIndex] = req.body
-  res.redirect(`/breads/${req.params.arrayIndex}`)
-})
-
-// DELETE
-breads.delete('/:indexArray', (req, res) => {
-  Bread.splice(req.params.indexArray, 1)
-  res.status(303).redirect('/breads')
+  Bread.findByIdAndUpdate(req.params.id, req.body, {new: true})
+  .then(updatedBread => {
+    console.log(updatedBread)
+    res.redirect(`/breads/${req.params.id}`)
+  })
 })
 
 module.exports = breads
-  
+
